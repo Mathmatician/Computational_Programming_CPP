@@ -13,6 +13,7 @@ public:
 	MATRIX();
 	MATRIX(int rows, int cols);
 	void set_size(const int rows, const int cols);
+	void set_size(const int rows, const int cols, const T val);
 	void add_value_at(T val, const int rows, const int cols);
 	T get_value_at(const int rows, const int cols);
 	void display_matrix();
@@ -64,13 +65,31 @@ MATRIX<T>::MATRIX(int rows, int cols)
 
 
 template <typename T>
+void MATRIX<T>::set_size(const int rows, const int cols, const T val)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		std::vector<T> ROW;
+		for (int j = 0; j < cols; j++)
+		{
+			ROW.push_back(val);
+		}
+
+		matrix.push_back(ROW);
+	}
+}
+
+template <typename T>
 void MATRIX<T>::set_size(const int rows, const int cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
 		std::vector<T> ROW;
 		for (int j = 0; j < cols; j++)
-			ROW.push_back(0);
+		{
+			T val;
+			ROW.push_back(val);
+		}
 
 		matrix.push_back(ROW);
 	}
