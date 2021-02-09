@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#define PI 3.14159265358979323846
+
 template <typename T>
 class MATRIX {
 
@@ -54,38 +56,19 @@ public:
 	}
 };
 
-/*
-template <typename T>
-MATRIX<T>* operator*(MATRIX<T>& left_matrix, MATRIX<T>& right_matrix)
-{
-	MATRIX<T>* mtx = new MATRIX<T>();
 
-	if ((left_matrix.get_row_size() > 0 && left_matrix.get_colomn_size() > 0) && (right_matrix.get_row_size() > 0 && right_matrix.get_colomn_size() > 0))
+template <typename T>
+MATRIX<T>* operator*(MATRIX<T>& input_matrix, double d_num)
+{
+	for (int i = 0; i < input_matrix.get_row_size(); i++)
 	{
-		if (left_matrix.get_colomn_size() == right_matrix.get_row_size())
+		for (int j = 0; j < input_matrix.get_colomn_size(); j++)
 		{
-			//mtx->set_size(left_matrix.get_row_size(), right_matrix.get_colomn_size());
-			std::vector<T> ROW;
-			for (int i = 0; i < left_matrix.get_row_size(); i++)
-			{
-				for (int j = 0; j < right_matrix.get_colomn_size(); j++)
-				{
-					T val;
-					val = 0;
-					for (int k = 0; k < left_matrix.get_colomn_size(); k++)
-					{
-						val = val + left_matrix.get_value_at(i, k) * right_matrix.get_value_at(k, j);
-					}
-					//mtx->add_value_at(val, i, j);
-					ROW.push_back(val);
-				}
-				mtx->add_row(ROW);
-			}
+			input_matrix.add_value_at(d_num * input_matrix.get_value_at(i, j), i, j);
 		}
 	}
-
-	return mtx;
-}*/
+	return &input_matrix;
+}
 
 
 
