@@ -1,3 +1,5 @@
+#include "Euler_Number.h";
+
 #include <iostream>
 #include <vector>
 
@@ -12,32 +14,34 @@ private:
 public:
 	MATRIX();
 	MATRIX(int rows, int cols);
+	MATRIX(int rows, int cols, const T val);
 	void set_size(const int rows, const int cols);
 	void set_size(const int rows, const int cols, const T val);
+	const int get_row_size();
+	const int get_colomn_size();
 	void add_value_at(T val, const int rows, const int cols);
 	T get_value_at(const int rows, const int cols);
 	void display_matrix();
 	MATRIX<T>& get_matrix();
 
-
-
-	MATRIX* operator*(MATRIX<T>& right_matrix)
+	MATRIX<T>* operator*(MATRIX<T>& right_matrix)
 	{
-		MATRIX* mtx = new MATRIX();
-		
-		if ((matrix.size() > 0 && matrix[0].size() > 0) && (right_matrix.matrix.size() > 0 && right_matrix.matrix[0].size() > 0))
+		MATRIX<T>* mtx = new MATRIX<T>();
+
+		if ((this->get_row_size() > 0 && this->get_colomn_size() > 0) && (right_matrix.get_row_size() > 0 && right_matrix.get_colomn_size() > 0))
 		{
-			if (matrix[0].size() == right_matrix.matrix.size())
+			if (this->get_colomn_size() == right_matrix.get_row_size())
 			{
-				for (int i = 0; i < matrix.size(); i++)
+				for (int i = 0; i < this->get_row_size(); i++)
 				{
-					std::vector<double> ROW;
-					for (int j = 0; j < right_matrix.matrix[0].size(); j++)
+					std::vector<T> ROW;
+					for (int j = 0; j < right_matrix.get_colomn_size(); j++)
 					{
-						T val = 0;
-						for (int k = 0; k < matrix[0].size(); k++)
+						T val;
+						val = 0;
+						for (int k = 0; k < this->get_colomn_size(); k++)
 						{
-							val += matrix[i][k] * right_matrix.matrix[k][j];
+							val = val + this->get_value_at(i, k) * right_matrix.get_value_at(k, j);
 						}
 						ROW.push_back(val);
 					}
@@ -49,6 +53,39 @@ public:
 		return mtx;
 	}
 };
+
+/*
+template <typename T>
+MATRIX<T>* operator*(MATRIX<T>& left_matrix, MATRIX<T>& right_matrix)
+{
+	MATRIX<T>* mtx = new MATRIX<T>();
+
+	if ((left_matrix.get_row_size() > 0 && left_matrix.get_colomn_size() > 0) && (right_matrix.get_row_size() > 0 && right_matrix.get_colomn_size() > 0))
+	{
+		if (left_matrix.get_colomn_size() == right_matrix.get_row_size())
+		{
+			//mtx->set_size(left_matrix.get_row_size(), right_matrix.get_colomn_size());
+			std::vector<T> ROW;
+			for (int i = 0; i < left_matrix.get_row_size(); i++)
+			{
+				for (int j = 0; j < right_matrix.get_colomn_size(); j++)
+				{
+					T val;
+					val = 0;
+					for (int k = 0; k < left_matrix.get_colomn_size(); k++)
+					{
+						val = val + left_matrix.get_value_at(i, k) * right_matrix.get_value_at(k, j);
+					}
+					//mtx->add_value_at(val, i, j);
+					ROW.push_back(val);
+				}
+				mtx->add_row(ROW);
+			}
+		}
+	}
+
+	return mtx;
+}*/
 
 
 
@@ -62,6 +99,13 @@ MATRIX<T>::MATRIX(int rows, int cols)
 	set_size(rows, cols);
 }
 
+
+
+template <typename T>
+MATRIX<T>::MATRIX(int rows, int cols, const T val)
+{
+	set_size(rows, cols, val);
+}
 
 
 template <typename T>
@@ -98,6 +142,21 @@ void MATRIX<T>::set_size(const int rows, const int cols)
 
 
 template <typename T>
+const int MATRIX<T>::get_row_size()
+{
+	return matrix.size();
+}
+
+
+template <typename T>
+const int MATRIX<T>::get_colomn_size()
+{
+	return matrix[0].size();
+}
+
+
+
+template <typename T>
 void MATRIX<T>::add_value_at(T val, const int rows, const int cols)
 {
 	if (rows >= 0 && cols >= 0)
@@ -114,6 +173,7 @@ T MATRIX<T>::get_value_at(const int rows, const int cols)
 		if (rows < matrix.size() && cols < matrix[0].size())
 			return matrix[rows][cols];
 	T a;
+	a = 0;
 	return a;
 }
 
@@ -129,7 +189,6 @@ void MATRIX<T>::display_matrix()
 		std::cout << std::endl;
 	}
 }
-
 
 
 template <typename T>
