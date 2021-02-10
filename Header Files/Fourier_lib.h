@@ -54,10 +54,51 @@ MATRIX<Euler_Number>* Fast_Fourier_Matrix(int n)
 			int k = i * j;
 			Euler_Number num;
 			num.set_real_number(cos( (2 * PI * k) / n ));
-			num.set_imaginary_number(sin( (2 * PI * k) / n ));
+			num.set_imaginary_number(-sin( (2 * PI * k) / n ));
 			m->add_value_at(num, i, j);
 		}
 	}
 	m = m->get_matrix() * (1 / sqrt(n));
 	return m;
+}
+
+double Fourier_Interpolation_Function(MATRIX<Euler_Number>* data, double begin_point, double end_point, double t)
+{
+	double P = 0;
+	double delta = end_point - begin_point;
+	double large_delta = t - begin_point;
+	int n = data->get_row_size() / 2;
+	for (int k = 1; k < n; k++)
+	{
+		double a = data->get_value_at(k, 0).get_real_number();
+		double b = data->get_value_at(k, 0).get_imaginary_number();
+		double theta = (2.0f * (double)k * PI * large_delta) / delta;
+		P += a * cos(theta) - b * sin(theta);
+	}
+
+	P *= 2.0f / sqrt((double)data->get_row_size());
+	P += data->get_value_at(0, 0).get_real_number() / sqrt((double)data->get_row_size());
+	P += (data->get_value_at(n, 0).get_real_number() * cos((data->get_row_size() * PI * large_delta) / delta)) / sqrt((double)data->get_row_size());
+
+	return P;
+}
+
+
+double Fourier_Interpolation_Function(MATRIX<Euler_Number>* data, double t)
+{
+	double P = 0;
+	int n = data->get_row_size() / 2;
+	for (int k = 1; k < n; k++)
+	{
+		double a = data->get_value_at(k, 0).get_real_number();
+		double b = data->get_value_at(k, 0).get_imaginary_number();
+		double theta = (2.0f * (double)k * PI * t) / data->get_row_size();
+		P += a * cos(theta) - b * sin(theta);
+	}
+
+	P *= 2.0f / sqrt((double)data->get_row_size());
+	P += data->get_value_at(0, 0).get_real_number() / sqrt((double)data->get_row_size());
+	P += (data->get_value_at(n, 0).get_real_number() * cos(PI * t)) / sqrt((double)data->get_row_size());
+
+	return P;
 }
