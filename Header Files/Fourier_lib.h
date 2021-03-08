@@ -10,9 +10,6 @@ MATRIX<Euler_Number>* Calculate_Fourier_Coefficients(std::vector<double> data)
 	MATRIX<Euler_Number>* f_matrix = Fast_Fourier_Matrix(data.size());
 	MATRIX<Euler_Number>* data_vect = get_data_euler(data);
 
-	//f_matrix->display_matrix();
-	//data_vect->display_matrix();
-
 	MATRIX<Euler_Number>* result = f_matrix->get_matrix() * data_vect->get_matrix();
 
 	delete f_matrix;
