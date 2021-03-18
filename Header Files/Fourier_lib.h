@@ -1,9 +1,11 @@
 #include "Matrix.h"
+
 #include <cmath>
 
 MATRIX<double>* get_data(std::vector<double>);
 MATRIX<Euler_Number>* get_data_euler(std::vector<double>);
-MATRIX<Euler_Number>* Fast_Fourier_Matrix(int n);
+MATRIX<Euler_Number>* Fast_Fourier_Matrix(int);
+void Fast_Fourier_Transform(std::vector<double>);
 
 MATRIX<Euler_Number>* Calculate_Fourier_Coefficients(std::vector<double> data)
 {
@@ -98,4 +100,23 @@ double Fourier_Interpolation_Function(MATRIX<Euler_Number>* data, double t)
 	P += (data->get_value_at(n, 0).get_real_number() * cos(PI * t)) / sqrt((double)data->get_row_size());
 
 	return P;
+}
+
+
+/*--- Stores the data in a text file ---*/
+void Fast_Fourier_Transform(std::vector<double> data)
+{
+	MATRIX<Euler_Number>* data_vec = Calculate_Fourier_Coefficients(data);
+
+	std::ofstream file("Fourier_Transform_Data.txt");
+	float i = 0;
+	float f = data.size();
+	float del = 0.01f;
+	while (i < f)
+	{
+		file << Fourier_Interpolation_Function(data_vec, i);
+		file << "\n";
+		i += del;
+	}
+	file.close();
 }
