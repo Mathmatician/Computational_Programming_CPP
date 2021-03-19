@@ -5,8 +5,8 @@
 // define functions
 MATRIX<double>* Cubic_Spline_Matrix(std::vector<double> x_data, std::vector<double> y_data);
 MATRIX<double>* Cubic_Spline_Vector(std::vector<double> x_data, std::vector<double> y_data);
-void Cubic_Spline_Interpolation(std::vector<double> data);
-void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> y_data);
+void Cubic_Spline_Interpolation(std::vector<double> data, float del);
+void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> y_data, float del);
 
 
 MATRIX<double>* Cubic_Spline_Matrix(std::vector<double> x_data, std::vector<double> y_data)
@@ -68,18 +68,18 @@ MATRIX<double>* Cubic_Spline_Vector(std::vector<double> x_data, std::vector<doub
 
 
 
-void Cubic_Spline_Interpolation(std::vector<double> data)
+void Cubic_Spline_Interpolation(std::vector<double> data, float del)
 {
 	// Assume change in x is 1
 	std::vector<double> x_data;
 	for (int i = 0; i < data.size(); i++) { x_data.push_back(i); }
-	Cubic_Spline_Interpolation(x_data, data);
+	Cubic_Spline_Interpolation(x_data, data, del);
 }
 
 
 
 
-void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> y_data)
+void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> y_data, float del)
 {
 	// Set data to matrix
 	MATRIX<double>* data_vect = new MATRIX<double>(y_data.size(), 1);
@@ -116,7 +116,6 @@ void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> 
 	};
 
 	std::ofstream file("Cublic_Spline_Data.txt");
-	float del = 0.01f;
 	double start = x_data[0];
 	double end = x_data[x_data.size() - 1];
 	while (start < end)

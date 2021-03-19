@@ -104,14 +104,13 @@ double Fourier_Interpolation_Function(MATRIX<Euler_Number>* data, double t)
 
 
 /*--- Stores the data in a text file ---*/
-void Fast_Fourier_Transform(std::vector<double> data)
+void Fast_Fourier_Transform(std::vector<double> data, float del)
 {
 	MATRIX<Euler_Number>* data_vec = Calculate_Fourier_Coefficients(data);
 
 	std::ofstream file("Fourier_Transform_Data.txt");
 	float i = 0;
 	float f = data.size();
-	float del = 0.01f;
 	while (i < f)
 	{
 		file << Fourier_Interpolation_Function(data_vec, i);
