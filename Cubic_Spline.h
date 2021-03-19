@@ -121,8 +121,8 @@ void Cubic_Spline_Interpolation(std::vector<double> x_data, std::vector<double> 
 	double end = x_data[x_data.size() - 1];
 	while (start < end)
 	{
-		file << cubic_spline_function(start) << " ";
-		file << start;
+		file << start << " ";
+		file << cubic_spline_function(start);
 		file << "\n";
 		start = start + del;
 	}
